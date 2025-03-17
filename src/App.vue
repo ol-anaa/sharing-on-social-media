@@ -13,10 +13,17 @@ import TheWelcome from './components/TheWelcome.vue'
     </h1>
 
     <section class="buttons">
+
+      <button class="geral" v-on:click="shareOnMobile">
+        <img src="./components/icons/share.png" alt="wpp" width="20px" height="auto">
+        Geral
+      </button>
+
       <button class="wpp" v-on:click="shareOnWhatsAppMobile">
         <img src="./components/icons/whatsapp.png" alt="wpp" width="20px" height="auto">
         WhatsApp
       </button>
+
     </section>
 
   </main>
@@ -30,13 +37,27 @@ export default {
 	name: 'App',
 	methods:
   {
+    async shareOnMobile() {
+      const response = await fetch(certificado);
+
+      const blob = await response.blob();
+      const file = new File([blob], "certificado.png", { type: "image/png" });
+     
+      await navigator.share({
+        files: [file],
+        text: "Confira meu certificado!",
+      });
+    },
+
     async shareOnWhatsAppMobile() {
       const response = await fetch(certificado);
 
       const blob = await response.blob();
       const file = new File([blob], "certificado.png", { type: "image/png" });
-      
-      if (navigator.canShare && navigator.canShare({ files: [file] })) {
+     
+      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+      if (isMobile) {
         await navigator.share({
           files: [file],
           text: "Confira meu certificado!",
@@ -81,22 +102,34 @@ main{
 }
 
 button{
-  cursor: pointer;
-}
-.wpp{
-  background-color: green;
   display: flex;
   flex-direction: row;
   align-items: center;
   gap:5px;
 
   font-size: 15px;
-  color: rgba(255, 255, 255, 0.808);
   font-weight: 500;
 
-  border-radius: 10px;
+  border-radius: 5px;
   border: none;
-  padding: 8px;
+  padding: 6px 8px;
+
+  cursor: pointer;
+}
+
+.buttons{
+  display: flex;
+  flex-direction: row;
+  gap:10px;
+}
+.geral{
+  background-color: gray;
+  color: rgb(32, 32, 32);
+}
+
+.wpp{
+  background-color: green;
+  color: rgba(255, 255, 255, 0.808);
 }
 
 .logo {
