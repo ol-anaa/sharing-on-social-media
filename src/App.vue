@@ -131,12 +131,14 @@ export default {
       let blob = await this.GetCertificated();
       let imageUrl = URL.createObjectURL(blob);
 
+      
       if (this.isMobile) 
       {
         const appStoreUrl = 'https://apps.apple.com/app/telegram-messenger/id686449807';
         const playStoreUrl = 'https://play.google.com/store/apps/details?id=org.telegram.messenger';
 
-        window.location.href = `tg://msg_url?url=${encodeURIComponent(imageUrl)}`;
+        const imageUrl = "https://blog-static.petlove.com.br/wp-content/uploads/2021/08/Gato-filhote-7.jpg"; // Substitua pelo link real da imagem
+        window.location.href = `https://t.me/share/url?url=${encodeURIComponent(imageUrl)}`;
 
         setTimeout(() => {
             if (!document.hidden) 
@@ -158,7 +160,9 @@ export default {
           let result = await response.json();
 
           if (!result.ok) 
-              console.error('Erro ao enviar o certificado:', result.description);
+            console.error('Erro ao enviar o certificado:', result.description);
+          else
+            window.open('https://web.telegram.org/', '_blank');
 
         } catch (error) {
             console.error('Erro ao enviar o certificado:', error);
