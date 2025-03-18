@@ -24,6 +24,16 @@ import TheWelcome from './components/TheWelcome.vue'
         WhatsApp
       </button>
 
+      <button class="lk" v-on:click="shareOnLinkedinMobile">
+        <img src="./components/icons/linkedin.png" alt="wpp" width="15px" height="auto">
+        Linkedin
+      </button>
+
+      <button class="tel" v-on:click="shareOnTelegramMobile">
+        <img src="./components/icons/telegram.png" alt="wpp" width="15px" height="auto">
+        Telegram
+      </button>
+
     </section>
 
   </main>
@@ -35,13 +45,24 @@ import certificado from '@/assets/certificado.png';
 export default {
 
 	name: 'App',
+  data(){
+    return {
+      isMobile: /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent),
+      isIOS: /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream
+    }
+  },
 	methods:
   {
-    async shareOnMobile() {
+    async GetCertificated(){
       const response = await fetch(certificado);
-
       const blob = await response.blob();
-      const file = new File([blob], "certificado.png", { type: "image/png" });
+
+      return blob;
+    },
+
+    async shareOnMobile() {
+      let blob = await this.GetCertificated();
+      let file = new File([blob], "certificado.png", { type: "image/png" });
      
       await navigator.share({
         files: [file],
@@ -50,22 +71,18 @@ export default {
     },
 
     async shareOnWhatsAppMobile() {
-      const response = await fetch(certificado);
-
-      const blob = await response.blob();
-      const file = new File([blob], "certificado.png", { type: "image/png" });
+      let blob = await this.GetCertificated();
+      let file = new File([blob], "certificado.png", { type: "image/png" });
      
-      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-
-      if (isMobile) {
+      if (this.isMobile) {
         await navigator.share({
           files: [file],
           text: "Confira meu certificado!",
         });
       } 
       else {
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement("a");
+        let url = URL.createObjectURL(blob);
+        let link = document.createElement("a");
 
         link.href = url;
         link.download = "certificado.png";
@@ -75,7 +92,79 @@ export default {
 
         window.open("https://web.whatsapp.com/", "_blank");
       }
+    },
+
+    async shareOnLinkedinMobile() {
+      let blob = await this.GetCertificated();
+      let imageUrl = URL.createObjectURL(blob);
+
+      /*
+      if(this.isMobile)
+      {
+        const appStoreUrl = 'https://apps.apple.com/app/id304916183'; // LinkedIn na App Store
+        const playStoreUrl = 'https://play.google.com/store/apps/details?id=com.linkedin.android'; // LinkedIn na Play Store
+        
+        const linkedInAppUrl = `linkedin://shareArticle?url=${encodeURIComponent(imageUrl)}`;
+        
+        window.location.href = linkedInAppUrl;
+  
+        setTimeout(() => {
+            if (!document.hidden) {
+                const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+                const storeUrl = isIOS ? appStoreUrl : playStoreUrl;
+                window.location.href = storeUrl;
+            }
+        }, 500);
+      }
+      else{
+        console.log(imageUrl)
+        const linkedInShareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(imageUrl)}`;
+        window.open(linkedInShareUrl, '_blank');
+      }
+      */
+    },
+
+    async shareOnTelegramMobile() {
+      const botToken = '7436286567:AAG_J8tpUG8gioQYD2waPeXImGxaaKViLVM'; // Token do bot
+      const chatId = '1720763140'; // chat_id do usuário
+      
+      let blob = await this.GetCertificated();
+      
+      if (this.isMobile) 
+      {
+        const appStoreUrl = 'https://apps.apple.com/app/telegram-messenger/id686449807';
+        const playStoreUrl = 'https://play.google.com/store/apps/details?id=org.telegram.messenger';
+
+        window.location.href = `tg://msg_url?url=${encodeURIComponent(imageUrl)}`;
+
+        setTimeout(() => {
+            if (!document.hidden) 
+              window.location.href = this.isIOS ? appStoreUrl : playStoreUrl;
+        }, 500);
+      } 
+      else {
+        let formData = new FormData();
+
+        formData.append('chat_id', chatId);
+        formData.append('document', blob, 'certificado.png');
+
+        try {
+          const response = await fetch(`https://api.telegram.org/bot${botToken}/sendDocument`, {
+              method: 'POST',
+              body: formData,
+          });
+
+          let result = await response.json();
+
+          if (!result.ok) 
+              console.error('Erro ao enviar o certificado:', result.description);
+
+        } catch (error) {
+            console.error('Erro ao enviar o certificado:', error);
+        }
+      }
     }
+    
   }
 }
   
@@ -132,6 +221,15 @@ button{
   color: rgba(255, 255, 255, 0.808);
 }
 
+.lk{
+  background-color: rgb(16, 101, 197);
+  color: rgba(255, 255, 255, 0.808);
+}
+
+.tel{
+  background-color: rgb(42, 114, 196);
+  color: rgba(255, 255, 255, 0.808);
+}
 .logo {
   display: block;
   margin: 0 auto 2rem;
