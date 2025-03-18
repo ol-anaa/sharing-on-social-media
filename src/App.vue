@@ -129,7 +129,8 @@ export default {
       const chatId = '1720763140'; // chat_id do usuário
       
       let blob = await this.GetCertificated();
-      
+      let imageUrl = URL.createObjectURL(blob);
+
       if (this.isMobile) 
       {
         const appStoreUrl = 'https://apps.apple.com/app/telegram-messenger/id686449807';
