@@ -14,8 +14,8 @@ import TheWelcome from './components/TheWelcome.vue'
 
     <section class="buttons">
 
-      <button class="geral" v-on:click="shareOnMobile">
-        <img src="./components/icons/share.png" alt="wpp" width="20px" height="auto">
+      <button class="geral" v-on:click="shareOnNative">
+        <img src="./components/icons/share.png" alt="geral" width="20px" height="auto">
         Geral
       </button>
 
@@ -25,13 +25,18 @@ import TheWelcome from './components/TheWelcome.vue'
       </button>
 
       <button class="lk" v-on:click="shareOnLinkedinMobile">
-        <img src="./components/icons/linkedin.png" alt="wpp" width="15px" height="auto">
+        <img src="./components/icons/linkedin.png" alt="lk" width="15px" height="auto">
         Linkedin
       </button>
 
       <button class="tel" v-on:click="shareOnTelegramMobile">
-        <img src="./components/icons/telegram.png" alt="wpp" width="15px" height="auto">
+        <img src="./components/icons/telegram.png" alt="tel" width="15px" height="auto">
         Telegram
+      </button>
+
+      <button class="insta" v-on:click="shareOnInstagram">
+        <img src="./components/icons/instagram.png" alt="insta" width="15px" height="auto">
+        Instagram
       </button>
 
     </section>
@@ -48,11 +53,13 @@ export default {
   data(){
     return {
       isMobile: /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent),
-      isIOS: /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream
+      isIOS: /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream,
+      linkCertificadoAWS: "https://blog-static.petlove.com.br/wp-content/uploads/2021/08/Gato-filhote-7.jpg"
     }
   },
 	methods:
   {
+    //Gerando certificado via blob
     async GetCertificated(){
       const response = await fetch(certificado);
       const blob = await response.blob();
@@ -60,7 +67,7 @@ export default {
       return blob;
     },
 
-    async shareOnMobile() {
+    async shareOnNative() {
       let blob = await this.GetCertificated();
       let file = new File([blob], "certificado.png", { type: "image/png" });
      
@@ -95,50 +102,34 @@ export default {
     },
 
     async shareOnLinkedinMobile() {
-      let blob = await this.GetCertificated();
-      let imageUrl = URL.createObjectURL(blob);
 
-      /*
       if(this.isMobile)
       {
-        const appStoreUrl = 'https://apps.apple.com/app/id304916183'; // LinkedIn na App Store
-        const playStoreUrl = 'https://play.google.com/store/apps/details?id=com.linkedin.android'; // LinkedIn na Play Store
+        const appStoreUrl = 'https://apps.apple.com/app/id304916183';
+        const playStoreUrl = 'https://play.google.com/store/apps/details?id=com.linkedin.android';
+
+        window.location.href = `linkedin://shareArticle?url=${encodeURIComponent(imageUrl)}`;
         
-        const linkedInAppUrl = `linkedin://shareArticle?url=${encodeURIComponent(imageUrl)}`;
-        
-        window.location.href = linkedInAppUrl;
-  
         setTimeout(() => {
-            if (!document.hidden) {
-                const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-                const storeUrl = isIOS ? appStoreUrl : playStoreUrl;
-                window.location.href = storeUrl;
-            }
+          if (!document.hidden) 
+            window.location.href = this.isIOS ? appStoreUrl : playStoreUrl;
         }, 500);
       }
-      else{
-        console.log(imageUrl)
-        const linkedInShareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(imageUrl)}`;
-        window.open(linkedInShareUrl, '_blank');
+      else
+      {
+        const linkedinShareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(this.linkCertificadoAWS)}`;
+        window.open(linkedinShareUrl, '_blank');
       }
-      */
+
     },
 
-    async shareOnTelegramMobile() {
-      const botToken = '7436286567:AAG_J8tpUG8gioQYD2waPeXImGxaaKViLVM'; // Token do bot
-      const chatId = '1720763140'; // chat_id do usuário
-      
-      let blob = await this.GetCertificated();
-      let imageUrl = URL.createObjectURL(blob);
-
-      
+    async shareOnTelegramMobile() {      
       if (this.isMobile) 
       {
         const appStoreUrl = 'https://apps.apple.com/app/telegram-messenger/id686449807';
         const playStoreUrl = 'https://play.google.com/store/apps/details?id=org.telegram.messenger';
 
-        const imageUrl = "https://blog-static.petlove.com.br/wp-content/uploads/2021/08/Gato-filhote-7.jpg"; // Substitua pelo link real da imagem
-        window.location.href = `https://t.me/share/url?url=${encodeURIComponent(imageUrl)}`;
+        window.location.href = `https://t.me/share/url?url=${encodeURIComponent(this.linkCertificadoAWS)}`;
 
         setTimeout(() => {
             if (!document.hidden) 
@@ -146,30 +137,42 @@ export default {
         }, 500);
       } 
       else {
-        let formData = new FormData();
+        const telegramWebUrl = `https://t.me/share/url?url=${encodeURIComponent(this.linkCertificadoAWS)}`;
+        window.open(telegramWebUrl, '_blank');
+      }
+    },
+    
+    async shareOnInstagram() {
 
-        formData.append('chat_id', chatId);
-        formData.append('document', blob, 'certificado.png');
+      if(this.isMobile)
+      {
+        const appSotore = "https://apps.apple.com/app/instagram/id389801252";
+        const playStore = "https://play.google.com/store/apps/details?id=com.instagram.android";
 
-        try {
-          const response = await fetch(`https://api.telegram.org/bot${botToken}/sendDocument`, {
-              method: 'POST',
-              body: formData,
-          });
+        if(this.isIOS)
+          window.location.href = `instagram://library?AssetPath=${imageUri}`;
+        else
+          window.location.href = `intent://share?image=${imageUri}#Intent;package=com.instagram.android;action=android.intent.action.SEND;type=image/*;end;`;
 
-          let result = await response.json();
+        setTimeout(() => {
+          window.location.href = this.isIOS ? appSotore : playStore;
+        }, 3000);
+      }
+      else{
+        let blob = await this.GetCertificated();
+        let url = URL.createObjectURL(blob);
 
-          if (!result.ok) 
-            console.error('Erro ao enviar o certificado:', result.description);
-          else
-            window.open('https://web.telegram.org/', '_blank');
+        let link = document.createElement("a");
+        link.href = url;
+        link.download = "certificado.png";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
 
-        } catch (error) {
-            console.error('Erro ao enviar o certificado:', error);
-        }
+        window.open("https://www.instagram.com", "_blank");
       }
     }
-    
+
   }
 }
   
@@ -233,6 +236,11 @@ button{
 
 .tel{
   background-color: rgb(42, 114, 196);
+  color: rgba(255, 255, 255, 0.808);
+}
+
+.insta{
+  background-color: rgb(216, 46, 188);
   color: rgba(255, 255, 255, 0.808);
 }
 .logo {
