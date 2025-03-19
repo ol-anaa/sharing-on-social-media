@@ -144,7 +144,7 @@ export default {
     
     async shareOnInstagram() {
 
-      window.location.href = `instagram://app`
+      window.location.href = `https://deephive.de/KaleCSR`
       
 
       /*
