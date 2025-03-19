@@ -144,7 +144,7 @@ export default {
     
     async shareOnInstagram() {
 
-      window.location.href = `instagram://library?AssetPath=${this.linkCertificadoAWS}`;
+      window.location.href = `instagram://app`;
 
 
       /*
