@@ -149,11 +149,11 @@ export default {
         const appSotore = "https://apps.apple.com/app/instagram/id389801252";
         const playStore = "https://play.google.com/store/apps/details?id=com.instagram.android";
 
-        if(this.isIOS)
-          window.location.href = `instagram://library?AssetPath=${imageUri}`;
-        else
-          window.location.href = `intent://share?image=${imageUri}#Intent;package=com.instagram.android;action=android.intent.action.SEND;type=image/*;end;`;
-
+        if (this.isIOS) {
+          window.location.href = `instagram://library?LocalIdentifier=${imageUri}`;
+        } else {
+          window.location.href = `intent://#Intent;package=com.instagram.android;action=android.intent.action.SEND;type=image/*;S.android.intent.extra.STREAM=${imageUri};end;`;
+        }
         setTimeout(() => {
           window.location.href = this.isIOS ? appSotore : playStore;
         }, 3000);
