@@ -144,7 +144,7 @@ export default {
     
     async shareOnInstagram() {
 
-      window.location.href = "instagram://library?AssetPath=caminho-da-imagem";
+      window.location.href = `instagram://library?AssetPath=${this.linkCertificadoAW}`;
 
 
       /*
