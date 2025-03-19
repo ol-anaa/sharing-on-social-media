@@ -144,8 +144,8 @@ export default {
     
     async shareOnInstagram() {
 
-      window.location.href = `instagram://app`;
-
+      window.location.href = `instagram://app`
+      
 
       /*
       if(this.isMobile)
