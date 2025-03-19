@@ -144,13 +144,19 @@ export default {
     
     async shareOnInstagram() {
 
+      window.location.href = "instagram://library?AssetPath=caminho-da-imagem";
+
+
+      /*
       if(this.isMobile)
       {
         const appSotore = "https://apps.apple.com/app/instagram/id389801252";
         const playStore = "https://play.google.com/store/apps/details?id=com.instagram.android";
 
+
+
         if (this.isIOS) {
-          window.location.href = `instagram://library?LocalIdentifier=${imageUri}`;
+          window.location.href = `instagram://library?LocalIdentifier=${this.linkCertificadoAW}`;
         } else {
           window.location.href = `intent://#Intent;package=com.instagram.android;action=android.intent.action.SEND;type=image/*;S.android.intent.extra.STREAM=${imageUri};end;`;
         }
@@ -171,6 +177,7 @@ export default {
 
         window.open("https://www.instagram.com", "_blank");
       }
+        */
     }
 
   }
