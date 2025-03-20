@@ -44,6 +44,13 @@ import TheWelcome from './components/TheWelcome.vue'
         Instagram
       </button>
 
+      <a href="intent://www.facebook.com/#Intent;package=com.facebook.katana;scheme=https;end;">
+        Abrir no Facebook
+      </a>
+
+      <a href="https://www.facebook.com">Abrir no Facebook</a>
+
+
     </section>
 
   </main>
