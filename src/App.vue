@@ -39,6 +39,11 @@ import TheWelcome from './components/TheWelcome.vue'
         Instagram
       </button>
 
+      <button class="face" v-on:click="shareOnFacebook">
+        <img src="./components/icons/facebook.png" alt="face" width="15px" height="auto">
+        Instagram
+      </button>
+
     </section>
 
   </main>
@@ -144,26 +149,15 @@ export default {
     
     async shareOnInstagram() {
 
-      window.location.href = `https://deephive.de/KaleCSR`
-      
-
-      /*
-      if(this.isMobile)
-      {
-        const appSotore = "https://apps.apple.com/app/instagram/id389801252";
-        const playStore = "https://play.google.com/store/apps/details?id=com.instagram.android";
-
-
-
-        if (this.isIOS) {
-          window.location.href = `instagram://library?LocalIdentifier=${this.linkCertificadoAW}`;
-        } else {
-          window.location.href = `intent://#Intent;package=com.instagram.android;action=android.intent.action.SEND;type=image/*;S.android.intent.extra.STREAM=${imageUri};end;`;
-        }
-        setTimeout(() => {
-          window.location.href = this.isIOS ? appSotore : playStore;
-        }, 3000);
-      }
+      let blob = await this.GetCertificated();
+      let file = new File([blob], "certificado.png", { type: "image/png" });
+     
+      if (this.isMobile) {
+        await navigator.share({
+          files: [file],
+          text: "Confira meu certificado!",
+        });
+      } 
       else{
         let blob = await this.GetCertificated();
         let url = URL.createObjectURL(blob);
@@ -177,7 +171,26 @@ export default {
 
         window.open("https://www.instagram.com", "_blank");
       }
-        */
+    },
+
+    async shareOnFacebook() {
+
+      const appUrl = `fb://share?url=${encodeURIComponent(this.linkCertificadoAWS)}`;
+      const webUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(this.linkCertificadoAWS)}`;
+
+      if (this.isMobile) {
+        window.location.href = appUrl;
+        
+        setTimeout(() => {
+          if (!document.hidden) {
+            window.location.href = webUrl;
+          }
+        }, 500);
+      } 
+      else{
+        const shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(this.linkCertificadoAWS)}`;
+        window.open(shareUrl, '_blank');
+      }
     }
 
   }
@@ -250,6 +263,12 @@ button{
   background-color: rgb(216, 46, 188);
   color: rgba(255, 255, 255, 0.808);
 }
+
+.face{
+  background-color: rgb(46, 91, 216);
+  color: rgba(255, 255, 255, 0.808);
+}
+
 .logo {
   display: block;
   margin: 0 auto 2rem;
