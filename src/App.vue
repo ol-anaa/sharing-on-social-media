@@ -176,15 +176,15 @@ export default {
     async shareOnFacebook() {
 
       const appUrl = `fb://share?url=${encodeURIComponent(this.linkCertificadoAWS)}`;
-      const webUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(this.linkCertificadoAWS)}`;
+      const appStoreUrl = 'https://apps.apple.com/app/id304916183';
+      const playStoreUrl = 'https://play.google.com/store/apps/details?id=com.linkedin.android';
 
       if (this.isMobile) {
         window.location.href = appUrl;
         
         setTimeout(() => {
-          if (!document.hidden) {
-            window.location.href = webUrl;
-          }
+          if (!document.hidden) 
+            window.location.href = this.isIOS ? appStoreUrl : playStoreUrl;
         }, 500);
       } 
       else{
