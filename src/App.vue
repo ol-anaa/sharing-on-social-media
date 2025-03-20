@@ -1,15 +1,7 @@
-<!--
-<script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
-</script>
--->
-
-
 <template>
   <main>
     <h1>
-      Compartilhe a imagem em um dos <strong>aplicativos:</strong>
+      Compartilhe a imagem em um dos seguintes <strong>aplicativos:</strong>
     </h1>
 
     <section class="buttons">
@@ -19,19 +11,14 @@ import TheWelcome from './components/TheWelcome.vue'
         Geral
       </button>
 
-      <button class="wpp" v-on:click="shareOnWhatsAppMobile">
-        <img src="./components/icons/whatsapp.png" alt="wpp" width="20px" height="auto">
-        WhatsApp
-      </button>
-
       <button class="lk" v-on:click="shareOnLinkedinMobile">
         <img src="./components/icons/linkedin.png" alt="lk" width="15px" height="auto">
         Linkedin
       </button>
-
-      <button class="tel" v-on:click="shareOnTelegramMobile">
-        <img src="./components/icons/telegram.png" alt="tel" width="15px" height="auto">
-        Telegram
+      
+      <button class="face" v-on:click="shareOnFacebook">
+        <img src="./components/icons/facebook.png" alt="face" width="15px" height="auto">
+        Facebook
       </button>
 
       <button class="insta" v-on:click="shareOnInstagram">
@@ -39,21 +26,15 @@ import TheWelcome from './components/TheWelcome.vue'
         Instagram
       </button>
 
-      <button class="face" v-on:click="shareOnFacebook">
-        <img src="./components/icons/facebook.png" alt="face" width="15px" height="auto">
-        Instagram
+      <button class="tel" v-on:click="shareOnTelegramMobile">
+        <img src="./components/icons/telegram.png" alt="tel" width="15px" height="auto">
+        Telegram
       </button>
-
-      <a href="intent://www.facebook.com/#Intent;package=com.facebook.katana;scheme=https;end;">
-        Abrir no Facebook
-      </a>
-
-      <a href="https://www.facebook.com">Abrir no Facebook</a>
-
-      <a href="intent://www.facebook.com/sharer/sharer.php?u=https://blog-static.petlove.com.br/wp-content/uploads/2021/08/Gato-filhote-7.jpg#Intent;package=com.facebook.katana;scheme=https;end;">
-          Compartilhar no Facebook (Forçado para o App)
-      </a>
-
+      
+      <button class="wpp" v-on:click="shareOnWhatsAppMobile">
+        <img src="./components/icons/whatsapp.png" alt="wpp" width="20px" height="auto">
+        WhatsApp
+      </button>
 
     </section>
 
@@ -75,7 +56,6 @@ export default {
   },
 	methods:
   {
-    //Gerando certificado via blob
     async GetCertificated(){
       const response = await fetch(certificado);
       const blob = await response.blob();
@@ -84,26 +64,20 @@ export default {
     },
 
     async shareOnNative() {
-      let blob = await this.GetCertificated();
-      let file = new File([blob], "certificado.png", { type: "image/png" });
-     
       await navigator.share({
-        files: [file],
+        title: "Meu Certificado",
         text: "Confira meu certificado!",
+        url: this.linkCertificadoAWS,
       });
     },
 
     async shareOnWhatsAppMobile() {
-      let blob = await this.GetCertificated();
-      let file = new File([blob], "certificado.png", { type: "image/png" });
-     
-      if (this.isMobile) {
-        await navigator.share({
-          files: [file],
-          text: "Confira meu certificado!",
-        });
+      if (this.isMobile) 
+      {
+        this.shareOnNative();
       } 
       else {
+        let blob = await this.GetCertificated();
         let url = URL.createObjectURL(blob);
         let link = document.createElement("a");
 
@@ -159,20 +133,13 @@ export default {
     },
     
     async shareOnInstagram() {
-
-      let blob = await this.GetCertificated();
-      let file = new File([blob], "certificado.png", { type: "image/png" });
-     
-      if (this.isMobile) {
-        await navigator.share({
-          files: [file],
-          text: "Confira meu certificado!",
-        });
+      if (this.isMobile) 
+      {
+        this.shareOnNative();
       } 
       else{
         let blob = await this.GetCertificated();
         let url = URL.createObjectURL(blob);
-
         let link = document.createElement("a");
         link.href = url;
         link.download = "certificado.png";
@@ -185,18 +152,9 @@ export default {
     },
 
     async shareOnFacebook() {
-
-      const appUrl = `fb://share?url=${encodeURIComponent(this.linkCertificadoAWS)}`;
-      const appStoreUrl = 'https://apps.apple.com/app/id304916183';
-      const playStoreUrl = 'https://play.google.com/store/apps/details?id=com.linkedin.android';
-
-      if (this.isMobile) {
-        window.location.href = appUrl;
-        
-        setTimeout(() => {
-          if (!document.hidden) 
-            window.location.href = this.isIOS ? appStoreUrl : playStoreUrl;
-        }, 500);
+      if (this.isMobile) 
+      {
+        this.shareOnNative();
       } 
       else{
         const shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(this.linkCertificadoAWS)}`;
@@ -223,6 +181,23 @@ strong{
   font-weight: bold;
 }
 
+.buttons{
+  display: flex;
+  flex-direction: row;
+  gap:10px;
+}
+
+@media only screen and (max-width: 767px)
+{
+  .buttons{
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap:10px;
+  }
+}
+
+
 main{
   display: flex;
   flex-direction: column;
@@ -245,11 +220,6 @@ button{
   cursor: pointer;
 }
 
-.buttons{
-  display: flex;
-  flex-direction: row;
-  gap:10px;
-}
 .geral{
   background-color: gray;
   color: rgb(32, 32, 32);
