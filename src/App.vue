@@ -143,16 +143,30 @@ export default {
     },
 
     async shareOnFacebook() {
-      /* 
+      const shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(this.linkCertificadoAWS)}`;
+
       if (this.isMobile) 
       {
-        this.shareOnNative();
+        const appStoreUrl = 'https://apps.apple.com/app/facebook/id284882215';
+        const playStoreUrl = 'https://play.google.com/store/apps/details?id=com.facebook.katana'; 
+
+        window.location.href = shareUrl;
+
+        setTimeout(() => {
+          if (!document.hidden) {
+
+            if (this.isIOS) {
+              window.location.href = appStoreUrl;
+            }
+            else {
+              window.location.href = playStoreUrl;
+            }
+          }
+        }, 500);
+      
       } 
-      else{
-      }
-      */
-        const shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(this.linkCertificadoAWS)}`;
-        window.open(shareUrl, '_blank');
+      
+      window.open(shareUrl, '_blank');
     }
 
   }
