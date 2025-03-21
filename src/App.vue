@@ -155,22 +155,18 @@ export default {
     async shareOnFacebook() {
       const appStoreUrl = 'https://apps.apple.com/app/facebook/id284882215';
       const playStoreUrl = 'https://play.google.com/store/apps/details?id=com.facebook.katana'; 
-      let shareUrl = `https://www.facebook.com/dialog/share?app_id=SEU_APP_ID&display=popup&href=${encodeURIComponent(this.linkCertificadoAWS)}`;
+      let Id = 1627927724507191;
+      let shareUrl = `https://www.facebook.com/dialog/share?app_id=${Id}&display=popup&href=${encodeURIComponent(this.linkCertificadoAWS)}`;
   
+      window.open(shareUrl, '_blank');
+      
       if (this.isMobile) 
       {
-       
-        window.open(`fb://facewebmodal/f?href=${encodeURIComponent(this.linkCertificadoAWS)}`, '_blank');
-
         setTimeout(() => {
           if (!document.hidden) 
-            window.open(this.isIOS ? appStoreUrl : playStoreUrl, '_blank');
+            window.location.href(this.isIOS ? appStoreUrl : playStoreUrl, '_blank');
         }, 500);
-    }
-    else
-    {  
-      window.open(shareUrl, '_blank');
-    }
+      }
 
     }
 
