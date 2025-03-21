@@ -155,35 +155,13 @@ export default {
     async shareOnFacebook() {
       const appStoreUrl = 'https://apps.apple.com/app/facebook/id284882215';
       const playStoreUrl = 'https://play.google.com/store/apps/details?id=com.facebook.katana'; 
-      let shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(this.linkCertificadoAWS)}`;
-
-      const redirect = window.open(shareUrl, '_blank');
-
-      if (redirect) {
-
-        const checkTab = setInterval(() => {
-          
-          try {
-            if (redirect.location.href.includes('facebook')) 
-            {
-              window.location.href = this.isIOS ? appStoreUrl : playStoreUrl;
-            }
-          } 
-          catch (e) 
-          { }
-        }, 500); // Verifica a cada 500ms
-      } 
-      else 
-      {
-        console.log('A nova aba não pôde ser aberta (pode ter sido bloqueada pelo navegador).');
-      }
-
-
-/*
+      let shareUrl = `https://www.facebook.com/dialog/share?app_id=SEU_APP_ID&display=popup&href=${encodeURIComponent(this.linkCertificadoAWS)}`;
+  
       if (this.isMobile) 
       {
-        window.location.href = shareUrl;
-        
+       
+        window.open(`fb://facewebmodal/f?href=${encodeURIComponent(this.linkCertificadoAWS)}`, '_blank');
+
         setTimeout(() => {
           if (!document.hidden) 
             window.open(this.isIOS ? appStoreUrl : playStoreUrl, '_blank');
@@ -193,7 +171,6 @@ export default {
     {  
       window.open(shareUrl, '_blank');
     }
-      */
 
     }
 
