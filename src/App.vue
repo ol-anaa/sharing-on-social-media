@@ -119,19 +119,16 @@ export default {
     },
     
     async shareOnInstagram() {
-      
-      window.open(instagramStoryUrl, "_blank");
+      let blob = await this.GetCertificated();
+      let url = URL.createObjectURL(blob);
+      let link = document.createElement("a");
+      link.href = url;
+      link.download = "certificado.png";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
 
-        let blob = await this.GetCertificated();
-        let url = URL.createObjectURL(blob);
-        let link = document.createElement("a");
-        link.href = url;
-        link.download = "certificado.png";
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-
-        window.open("https://www.instagram.com", "_blank");
+      window.open("https://www.instagram.com", "_blank");
     },
 
     async shareOnFacebook() {
@@ -139,32 +136,7 @@ export default {
       const playStoreUrl = 'https://play.google.com/store/apps/details?id=com.facebook.katana'; 
       let Id = 1627927724507191;
       let shareUrl = `https://www.facebook.com/dialog/share?app_id=${Id}&display=popup&href=${encodeURIComponent(this.linkCertificadoAWS)}`;
-      let facebookAppLink = `fb://facewebmodal/f?href=${encodeURIComponent(this.linkCertificadoAWS)}`;
 
-      if (this.isIOS) {
-        window.open(shareUrl, '_blank');
-
-        setTimeout(() => {
-            let hiddenBefore = document.hidden;
-
-            // Tenta abrir o aplicativo do Facebook
-            window.location.href = facebookAppLink;
-
-            setTimeout(() => {
-                let hiddenAfter = document.hidden;
-
-                // Se o app não abriu (a página ainda está visível), manda para a loja
-                if (!hiddenBefore && !hiddenAfter) {
-                    window.location.href = this.isIOS ? appStoreUrl : playStoreUrl;
-                }
-            }, 1500); // Tempo de espera para detectar se o app abriu
-        }, 1000);
-      } else {
-          // Se for desktop, só abre o Facebook no navegador
-          window.open(shareUrl, '_blank');
-      }
-
-      /*
       window.open(shareUrl, '_blank');
       
       if (this.isMobile) 
@@ -174,9 +146,7 @@ export default {
             window.location.href(this.isIOS ? appStoreUrl : playStoreUrl, '_blank');
         }, 500);
       }
-      */
     }
-
   }
 }
   
