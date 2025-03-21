@@ -112,7 +112,8 @@ export default {
             if (!document.hidden) 
               window.open(this.isIOS ? appStoreUrl : playStoreUrl, '_blank');
         }, 500);
-      } 
+      }
+       
     },
 
     async shareOnTelegramMobile() {    
@@ -152,21 +153,20 @@ export default {
     },
 
     async shareOnFacebook() {
-      const shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(this.linkCertificadoAWS)}`;
+      const appStoreUrl = 'https://apps.apple.com/app/facebook/id284882215';
+      const playStoreUrl = 'https://play.google.com/store/apps/details?id=com.facebook.katana'; 
+      let shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(this.linkCertificadoAWS)}`;
+
+      window.open(shareUrl, '_blank');
 
       if (this.isMobile) 
       {
-        const appStoreUrl = 'https://apps.apple.com/app/facebook/id284882215';
-        const playStoreUrl = 'https://play.google.com/store/apps/details?id=com.facebook.katana'; 
-        
-        window.open(shareUrl, '_blank');
-
         setTimeout(() => {
           if (!document.hidden) 
             window.open(this.isIOS ? appStoreUrl : playStoreUrl, '_blank');
         }, 500);
-
       }
+
     }
 
   }
