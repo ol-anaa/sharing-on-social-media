@@ -164,7 +164,7 @@ export default {
         const checkTab = setInterval(() => {
           
           try {
-            if (redirect.location.href === shareUrl) 
+            if (redirect.location.href.includes('facebook')) 
             {
               window.location.href = this.isIOS ? appStoreUrl : playStoreUrl;
             }
