@@ -157,6 +157,29 @@ export default {
       const playStoreUrl = 'https://play.google.com/store/apps/details?id=com.facebook.katana'; 
       let shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(this.linkCertificadoAWS)}`;
 
+      const redirect = window.open(shareUrl, '_blank');
+
+      if (redirect) {
+
+        const checkTab = setInterval(() => {
+          
+          try {
+            if (redirect.location.href === shareUrl) 
+            {
+              window.location.href = this.isIOS ? appStoreUrl : playStoreUrl;
+            }
+          } 
+          catch (e) 
+          { }
+        }, 500); // Verifica a cada 500ms
+      } 
+      else 
+      {
+        console.log('A nova aba não pôde ser aberta (pode ter sido bloqueada pelo navegador).');
+      }
+
+
+/*
       if (this.isMobile) 
       {
         window.location.href = shareUrl;
@@ -170,6 +193,7 @@ export default {
     {  
       window.open(shareUrl, '_blank');
     }
+      */
 
     }
 
