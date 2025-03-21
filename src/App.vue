@@ -93,24 +93,15 @@ export default {
 
     async shareOnLinkedinMobile() {
 
-      if(this.isMobile)
-      {
-        const appStoreUrl = 'https://apps.apple.com/app/id304916183';
-        const playStoreUrl = 'https://play.google.com/store/apps/details?id=com.linkedin.android';
+      const OrganizationId = 1111;
+      let IssueYear = 2024;
+      let IssueMonth = 6;
+      let ValidationURL = 'https://blog-static.petlove.com.br/wp-content/uploads/2021/08/Gato-filhote-7.jpg';
+      let EnrollmentHash = 10101;
+      let CertificateName = 'Certificado 01';
 
-        window.location.href = `linkedin://shareArticle?url=${encodeURIComponent(imageUrl)}`;
-        
-        setTimeout(() => {
-          if (!document.hidden) 
-            window.location.href = this.isIOS ? appStoreUrl : playStoreUrl;
-        }, 500);
-      }
-      else
-      {
-        const linkedinShareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(this.linkCertificadoAWS)}`;
-        window.open(linkedinShareUrl, '_blank');
-      }
-
+      let url = `https://www.linkedin.com/profile/add?startTask=CERTIFICATION_NAME&organizationId=${OrganizationId}&issueYear=${IssueYear}&issueMonth=${IssueMonth}&certUrl=${ValidationURL}&certId=${EnrollmentHash}&name=${CertificateName}`
+      window.open(url, '_blank');
     },
 
     async shareOnTelegramMobile() {      
@@ -152,14 +143,16 @@ export default {
     },
 
     async shareOnFacebook() {
+      /* 
       if (this.isMobile) 
       {
         this.shareOnNative();
       } 
       else{
+      }
+      */
         const shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(this.linkCertificadoAWS)}`;
         window.open(shareUrl, '_blank');
-      }
     }
 
   }
