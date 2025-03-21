@@ -72,23 +72,8 @@ export default {
     },
 
     async shareOnWhatsAppMobile() {
-      if (this.isMobile) 
-      {
-        this.shareOnNative();
-      } 
-      else {
-        let blob = await this.GetCertificated();
-        let url = URL.createObjectURL(blob);
-        let link = document.createElement("a");
-
-        link.href = url;
-        link.download = "certificado.png";
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-
-        window.open("https://web.whatsapp.com/", "_blank");
-      }
+      const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(this.linkCertificadoAWS)}`;
+      window.open(whatsappUrl, '_blank');
     },
 
     async shareOnLinkedinMobile() {
@@ -134,11 +119,9 @@ export default {
     },
     
     async shareOnInstagram() {
-      if (this.isMobile) 
-      {
-        this.shareOnNative();
-      } 
-      else{
+      
+      window.open(instagramStoryUrl, "_blank");
+
         let blob = await this.GetCertificated();
         let url = URL.createObjectURL(blob);
         let link = document.createElement("a");
@@ -149,7 +132,6 @@ export default {
         document.body.removeChild(link);
 
         window.open("https://www.instagram.com", "_blank");
-      }
     },
 
     async shareOnFacebook() {
@@ -157,7 +139,24 @@ export default {
       const playStoreUrl = 'https://play.google.com/store/apps/details?id=com.facebook.katana'; 
       let Id = 1627927724507191;
       let shareUrl = `https://www.facebook.com/dialog/share?app_id=${Id}&display=popup&href=${encodeURIComponent(this.linkCertificadoAWS)}`;
-  
+      let facebookAppLink = `fb://facewebmodal/f?href=${encodeURIComponent(this.linkCertificadoAWS)}`;
+
+      let newTab = window.open(shareUrl, '_blank');
+
+      setTimeout(() => {
+        if (newTab && !newTab.closed) {
+            window.location.href = facebookAppLink;
+
+            setTimeout(() => {
+                if (!document.hidden) 
+                {
+                    window.location.href = this.isIOS ? appStoreUrl : playStoreUrl;
+                }
+            }, 2000); 
+        }
+    }, 1500);
+
+      /*
       window.open(shareUrl, '_blank');
       
       if (this.isMobile) 
@@ -167,7 +166,7 @@ export default {
             window.location.href(this.isIOS ? appStoreUrl : playStoreUrl, '_blank');
         }, 500);
       }
-
+      */
     }
 
   }
