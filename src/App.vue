@@ -157,15 +157,19 @@ export default {
       const playStoreUrl = 'https://play.google.com/store/apps/details?id=com.facebook.katana'; 
       let shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(this.linkCertificadoAWS)}`;
 
-      window.open(shareUrl, '_blank');
-
       if (this.isMobile) 
       {
+        window.location.href = shareUrl;
+        
         setTimeout(() => {
           if (!document.hidden) 
             window.open(this.isIOS ? appStoreUrl : playStoreUrl, '_blank');
         }, 500);
-      }
+    }
+    else
+    {  
+      window.open(shareUrl, '_blank');
+    }
 
     }
 
