@@ -99,28 +99,37 @@ export default {
       let ValidationURL = 'https://blog-static.petlove.com.br/wp-content/uploads/2021/08/Gato-filhote-7.jpg';
       let EnrollmentHash = 10101;
       let CertificateName = 'Certificado 01';
-
       let url = `https://www.linkedin.com/profile/add?startTask=CERTIFICATION_NAME&organizationId=${OrganizationId}&issueYear=${IssueYear}&issueMonth=${IssueMonth}&certUrl=${ValidationURL}&certId=${EnrollmentHash}&name=${CertificateName}`
-      window.open(url, '_blank');
-    },
+      
+      const appStoreUrl = 'https://apps.apple.com/app/linkedin/id288429040';
+      const playStoreUrl = 'https://play.google.com/store/apps/details?id=com.linkedin.android';
 
-    async shareOnTelegramMobile() {      
+      window.open(url, '_blank');
+
       if (this.isMobile) 
       {
-        const appStoreUrl = 'https://apps.apple.com/app/telegram-messenger/id686449807';
-        const playStoreUrl = 'https://play.google.com/store/apps/details?id=org.telegram.messenger';
-
-        window.location.href = `https://t.me/share/url?url=${encodeURIComponent(this.linkCertificadoAWS)}`;
-
         setTimeout(() => {
             if (!document.hidden) 
-              window.location.href = this.isIOS ? appStoreUrl : playStoreUrl;
+              window.open(this.isIOS ? appStoreUrl : playStoreUrl, '_blank');
         }, 500);
       } 
-      else {
-        const telegramWebUrl = `https://t.me/share/url?url=${encodeURIComponent(this.linkCertificadoAWS)}`;
-        window.open(telegramWebUrl, '_blank');
-      }
+    },
+
+    async shareOnTelegramMobile() {    
+      
+      const appStoreUrl = 'https://apps.apple.com/app/telegram-messenger/id686449807';
+      const playStoreUrl = 'https://play.google.com/store/apps/details?id=org.telegram.messenger';
+      const telegramWebUrl = `https://t.me/share/url?url=${encodeURIComponent(this.linkCertificadoAWS)}`;
+
+      window.open(telegramWebUrl, '_blank');
+
+      if (this.isMobile) 
+      {
+        setTimeout(() => {
+            if (!document.hidden) 
+              window.open(this.isIOS ? appStoreUrl : playStoreUrl, '_blank');
+        }, 500);
+      } 
     },
     
     async shareOnInstagram() {
@@ -149,8 +158,8 @@ export default {
       {
         const appStoreUrl = 'https://apps.apple.com/app/facebook/id284882215';
         const playStoreUrl = 'https://play.google.com/store/apps/details?id=com.facebook.katana'; 
-
-        window.location.href = shareUrl;
+        
+        window.open(shareUrl, '_blank');
 
         setTimeout(() => {
           if (!document.hidden) {
@@ -163,10 +172,7 @@ export default {
             }
           }
         }, 500);
-      
       } 
-      
-      window.open(shareUrl, '_blank');
     }
 
   }
