@@ -141,20 +141,28 @@ export default {
       let shareUrl = `https://www.facebook.com/dialog/share?app_id=${Id}&display=popup&href=${encodeURIComponent(this.linkCertificadoAWS)}`;
       let facebookAppLink = `fb://facewebmodal/f?href=${encodeURIComponent(this.linkCertificadoAWS)}`;
 
-      let newTab = window.open(shareUrl, '_blank');
+      if (this.isIOS) {
+        window.open(shareUrl, '_blank');
 
-      setTimeout(() => {
-        if (newTab && !newTab.closed) {
+        setTimeout(() => {
+            let hiddenBefore = document.hidden;
+
+            // Tenta abrir o aplicativo do Facebook
             window.location.href = facebookAppLink;
 
             setTimeout(() => {
-                if (!document.hidden) 
-                {
+                let hiddenAfter = document.hidden;
+
+                // Se o app não abriu (a página ainda está visível), manda para a loja
+                if (!hiddenBefore && !hiddenAfter) {
                     window.location.href = this.isIOS ? appStoreUrl : playStoreUrl;
                 }
-            }, 2000); 
-        }
-    }, 1500);
+            }, 1500); // Tempo de espera para detectar se o app abriu
+        }, 1000);
+      } else {
+          // Se for desktop, só abre o Facebook no navegador
+          window.open(shareUrl, '_blank');
+      }
 
       /*
       window.open(shareUrl, '_blank');
