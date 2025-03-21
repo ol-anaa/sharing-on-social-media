@@ -162,17 +162,11 @@ export default {
         window.open(shareUrl, '_blank');
 
         setTimeout(() => {
-          if (!document.hidden) {
-
-            if (this.isIOS) {
-              window.location.href = appStoreUrl;
-            }
-            else {
-              window.location.href = playStoreUrl;
-            }
-          }
+          if (!document.hidden) 
+            window.open(this.isIOS ? appStoreUrl : playStoreUrl, '_blank');
         }, 500);
-      } 
+
+      }
     }
 
   }
